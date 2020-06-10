@@ -1,0 +1,4 @@
+<use name="boost_python"/>
+<use name="HggAnalyzer/Dumper"/>
+
+<library name="VHDumper"    file="VHDumper_PyWrapper.cc"/>
