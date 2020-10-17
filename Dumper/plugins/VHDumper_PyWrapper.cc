@@ -18,17 +18,17 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( VHMetDumper_SetGlobalScale, VHMetDumper:
 BOOST_PYTHON_MODULE(pluginVHDumper)
 {
 
-    class_<ZHLeptonicDumper>("ZHLeptonicDumper", init<std::string,std::string>())
+    class_<ZHLeptonicDumper>("ZHLeptonicDumper", init<std::string,std::string,std::string>())
         .def("Dumper",         &ZHLeptonicDumper::Dumper, ZHLeptonicDumper_Dumper())
         .def("SetGlobalScale", &ZHLeptonicDumper::SetGlobalScale, ZHLeptonicDumper_SetGlobalScale())
         ;
 
-    class_<WHLeptonicDumper>("WHLeptonicDumper", init<std::string,std::string>())
+    class_<WHLeptonicDumper>("WHLeptonicDumper", init<std::string,std::string,std::string>())
         .def("Dumper",         &WHLeptonicDumper::Dumper, WHLeptonicDumper_Dumper())
         .def("SetGlobalScale", &WHLeptonicDumper::SetGlobalScale, WHLeptonicDumper_SetGlobalScale())
         ;
 
-    class_<VHMetDumper>("VHMetDumper", init<std::string,std::string>())
+    class_<VHMetDumper>("VHMetDumper", init<std::string,std::string,std::string>())
         .def("Dumper",         &VHMetDumper::Dumper, VHMetDumper_Dumper())
         .def("SetGlobalScale", &VHMetDumper::SetGlobalScale, VHMetDumper_SetGlobalScale())
         ;

@@ -3,6 +3,7 @@
 
 #include "TFile.h"
 #include "TTree.h"
+#include "TH1.h"
 #include "TLorentzVector.h"
 
 #include <string>
@@ -11,7 +12,7 @@ class DiphotonBase{
 
     public:
 
-        DiphotonBase(std::string filename, std::string tagname, std::string type);
+        DiphotonBase(std::string filename, std::string tagname, std::string type, std::string pufilename);
         ~DiphotonBase();
 
         TLorentzVector Photon1P4();
@@ -32,6 +33,9 @@ class DiphotonBase{
         TFile* _file;
         TTree* _tree;
 
+        TFile* _pu_file;
+        TH1* _puWgt;
+
         std::string _filename;
 
         float _dipho_mass               ; 
@@ -40,6 +44,7 @@ class DiphotonBase{
         float _dipho_sublead_ptoM       ; 
         float _dipho_subleadIDMVA       ; 
         int   _nvtx                     ;
+        float _npu                      ;
         float _rho                      ;
 
     private:
@@ -60,6 +65,7 @@ class DiphotonBase{
         float _dipho_sublead_prompt     ;
         float _weight                   ;
         float _centralObjectWeight      ;
+        float _puweight                 ;
 
         bool _isSignal                  ;
         bool _isGJets                   ;

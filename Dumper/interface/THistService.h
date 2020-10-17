@@ -20,6 +20,8 @@ namespace Dumper{
             void AddNewTH2 (std::string name, int nbinx, double xmin, double xmax, int nbiny, double ymin, double ymax);
             TH1* Get1DPlot (std::string name); 
             TH2* Get2DPlot (std::string name);
+            void OverFlowMerge(std::string name);
+            void UnderFlowMerge(std::string name);
             void Close ();
     
         private:

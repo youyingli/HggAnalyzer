@@ -68,6 +68,19 @@ namespace Dumper{
     
         return _th2set[name];
     }
+
+    void
+    THistService::OverFlowMerge(std::string name)
+    {
+        int finalbin = _th1set[name]->GetNbinsX();
+        _th1set[name]->SetBinContent( finalbin, _th1set[name]->GetBinContent( finalbin ) + _th1set[name]->GetBinContent( finalbin+1 ) );
+    }
+
+    void
+    THistService::UnderFlowMerge(std::string name)
+    {
+        _th1set[name]->SetBinContent( 1, _th1set[name]->GetBinContent( 0 ) + _th1set[name]->GetBinContent( 1 ) );
+    }
     
     void
     THistService::Close()

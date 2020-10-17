@@ -3,10 +3,11 @@
 
 #include "HggAnalyzer/Dumper/interface/DiphotonBase.h"
 
+#include <iostream>
 
 using namespace std;
 
-DiphotonBase::DiphotonBase(string filename, string tagname, string type)
+DiphotonBase::DiphotonBase(string filename, string tagname, string type, string pufilename)
 {
     _file = TFile::Open(filename.c_str());
     _tree = (TTree*) _file->Get( Form("tagsDumper/trees/%s_13TeV_%s", type.c_str(), tagname.c_str()) );
@@ -18,6 +19,10 @@ DiphotonBase::DiphotonBase(string filename, string tagname, string type)
     vector<string> dummy_filename;
     boost::split(dummy_filename, filename, boost::is_any_of("/"));
     _filename = dummy_filename[ dummy_filename.size() - 1 ];
+
+    _pu_file = 0;
+    if (!pufilename.empty()) _pu_file = TFile::Open(pufilename.c_str());
+    if (_pu_file) _puWgt = (TH1*) _pu_file->Get("h1_pileup_ratio");
 
     InitializationBase();
 }
@@ -49,7 +54,9 @@ DiphotonBase::InitializationBase()
     _tree -> SetBranchAddress("dipho_subleadhasPixelSeed", &_dipho_subleadhasPixelSeed  );
     _tree -> SetBranchAddress("dipho_sublead_prompt",      &_dipho_sublead_prompt       );
     _tree -> SetBranchAddress("weight",                    &_weight                     );
+    _tree -> SetBranchAddress("puweight",                  &_puweight                   );
     _tree -> SetBranchAddress("nvtx",                      &_nvtx                       );
+    _tree -> SetBranchAddress("npu",                       &_npu                        );
     _tree -> SetBranchAddress("rho",                       &_rho                        );
     if (_isSignal) _tree -> SetBranchAddress("centralObjectWeight",       &_centralObjectWeight        );
 
@@ -77,6 +84,17 @@ DiphotonBase::Photon2P4()
 double
 DiphotonBase::Weight()
 {
-    if (_isSignal) return _weight * _centralObjectWeight;
-    else return _weight;
+
+    double weight = 1.;
+
+    //if (_isSignal) return _weight * _centralObjectWeight;
+    //else return _weight;
+    if (_isSignal) weight = _weight * _centralObjectWeight;
+    else weight = _weight;
+
+    if (_pu_file) weight *= ( 1. / _puweight * _puWgt->GetBinContent((int) _npu + 1) );
+
+
+    return weight;
+
 }
